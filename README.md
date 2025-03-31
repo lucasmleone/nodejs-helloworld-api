@@ -58,7 +58,7 @@ Automatizar el proceso de CI/CD, que incluye la instalación de dependencias, ej
 4. Seleccione **Content type: application/json**.
 5. Marque los siguientes eventos:
    - Push
-   - Pull requests
+   - Pull requests PR
 
 ---
 
