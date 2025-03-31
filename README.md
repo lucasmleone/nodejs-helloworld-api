@@ -63,7 +63,7 @@ Automatizar el proceso de CI/CD, que incluye la instalación de dependencias, ej
 
 ## Actualización a Pipeline Multibranch
 
-Se actualizó el pipeline clásico a un **Pipeline Multibranch** para detectar automáticamente los cambios en todas las ramas y ejecutar el pipeline en cada **pull request**.
+Inicialmente se usó un pipeline clásico, pero se actualizó a un **Pipeline Multibranch** para detectar automáticamente los cambios en todas las ramas y ejecutar el pipeline en cada **pull request**.
 
 ### Configuración
 
@@ -97,6 +97,8 @@ Con esta configuración, se asegura que cada cambio en las ramas o **pull reques
 - Health check del pipeline
 ![HC](/media/HC.png)
 
+## Diagrama de alto nivel
+![Diagrama](/media/diagrama.png)
 ---
 ## Notas
 
