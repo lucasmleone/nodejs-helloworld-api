@@ -1,100 +1,79 @@
-# Node.js Helloworld API - Pipeline de Integración y Despliegue
+# Jenkins CI/CD para API Node.js con Webhook y Ngrok
 
-Este proyecto es una API sencilla en Node.js que devuelve un mensaje de bienvenida. Además, incluye un pipeline en Jenkins que automatiza la instalación de dependencias, la ejecución de pruebas y el despliegue de la aplicación, culminando con un health check.
+Este proyecto implementa un proceso de CI/CD utilizando Jenkins, webhooks de GitHub y una API en Node.js. Se utiliza Ngrok para exponer Jenkins públicamente y permitir que GitHub active automáticamente el proceso de instalación, pruebas y despliegue de la aplicación.
 
-## Requerimientos
+---
 
-Antes de ejecutar este pipeline, asegúrate de cumplir con lo siguiente:
+## Objetivo
 
-1. **Node.js y npm**: Instala Node.js (incluye npm) desde [nodejs.org](https://nodejs.org/).
-2. **Jenkins**: Debes tener Jenkins instalado y configurado para trabajar con pipelines.
-3. **Plugin de NodeJS para Jenkins**: Configura el toolchain de Node.js en Jenkins para usar el identificador `nodejs`.
-4. **Git**: Para clonar el repositorio, asegúrate de tener Git instalado.
+Automatizar el proceso de CI/CD, que incluye la instalación de dependencias, ejecución de pruebas y despliegue de la aplicación cada vez que se realice un **push** o se abra un **pull request** en el repositorio.
 
-## Clonar el Repositorio
+---
 
-Ejecuta el siguiente comando en tu terminal para clonar el repositorio:
+## Requisitos Previos
 
-```bash
-git clone https://github.com/yosoyfunes/nodejs-helloworld-api.git
-```
+- Jenkins en funcionamiento.
+- [Ngrok](https://ngrok.com/) instalado.
+- Cuenta en GitHub y un fork del repositorio.
+- Plugins de Jenkins instalados:
+  - GitHub Plugin.
+  - NodeJS Plugin.
+- Configuración de la herramienta Node.js en Jenkins (en **Tools**). Asegúrese de que el nombre usado (por ejemplo, `nodejs`) coincida con la configuración del pipeline.
 
-## Instalación de Dependencias
+---
 
-Desde la raíz del proyecto, instala las dependencias necesarias:
+## Configuración Paso a Paso
 
-```bash
-npm install
-```
+### 1. Configurar Node.js en Jenkins
 
-## Ejecución de Pruebas y de la Aplicación
+- Acceda a **Manage Jenkins > Tools**.
+- En la sección de NodeJS, agregue una nueva instalación.
+- Asigne el nombre `nodejs` y seleccione la versión adecuada.
 
-Para asegurar el correcto funcionamiento de la aplicación, ejecuta las pruebas unitarias:
+### 2. Fork del Proyecto
 
-```bash
-npm test
-```
+- Forquee el repositorio en GitHub.
 
-Luego, inicia la aplicación:
+### 3. Exponer Jenkins con Ngrok
 
-```bash
-npm start
-```
+1. Inicie Ngrok para exponer Jenkins en el puerto 8080:
+   ```bash
+   ngrok http http://<tu-ip>:8080
+   ```
+   Nota: Reemplace `<tu-ip>` por la dirección correspondiente. La URL generada cambiará cada vez que se inicie Ngrok.
 
-Realiza una verificación rápida:
+2. Ejemplo de URL generada:
+   ```
+   https://random.ngrok-free.app/github-webhook/
+   ```
 
-```bash
-curl http://localhost:3000
-```
+### 4. Configurar el Webhook en GitHub
 
-## Pipeline de Integración Continua (Jenkins)
+1. Acceda al repositorio forkeado en GitHub.
+2. Vaya a **Settings > Webhooks** y haga clic en **Add webhook**.
+3. En el campo **Payload URL**, ingrese la URL generada:
+   ```
+   https://random.ngrok-free.app/github-webhook/
+   ```
+4. Seleccione **Content type: application/json**.
+5. Marque los siguientes eventos:
+   - Push
+   - Pull requests
 
-El proyecto incluye un Jenkinsfile que define el siguiente flujo:
+---
 
-- **Instalación de Dependencias**: Ejecuta `npm install`.
-- **Ejecución de Pruebas**: Utiliza `npm test` para correr las pruebas unitarias.
-- **Inicio de la Aplicación**: Arranca la API en segundo plano usando `npm start&`.
-- **Health Check**: Verifica que la aplicación responda correctamente mediante un `curl` al puerto 3000.
+## Cómo Probar el Proceso
 
-### Configuración del Pipeline
+1. Realice un push o cree un pull request en GitHub para activar el webhook.
+2. Jenkins ejecutará automáticamente el proceso de CI/CD.
+3. Verifique en la interfaz de Jenkins que el proceso se ejecute correctamente revisando los logs de cada etapa (instalación de dependencias, ejecución de pruebas y despliegue de la aplicación).
 
-1. **Crear un Job en Jenkins**:
-   - Crea un nuevo pipeline en Jenkins.
-   - Configura el Pipeline para que apunte al repositorio:  
-     `https://github.com/yosoyfunes/nodejs-helloworld-api.git`
-   - Selecciona la rama `main` o la que prefieras.
-   - Asegúrate de que el entorno tenga configurado el toolchain de Node.js correspondiente al label `nodejs`.
+---
 
-2. **Ejecutar el Pipeline**:
-   - Inicia una nueva ejecución para verificar que cada etapa se ejecute correctamente.
-   - Revisa la salida en cada etapa para confirmar que la API se instala, prueba, inicia y responde adecuadamente.
+## Evidencia
 
-## Ejemplos de Ejecución en el Pipeline
+Incluya capturas de pantalla o registros que demuestren la ejecución exitosa del proceso de CI/CD.
 
-### Ejecución Exitosa
+---
 
-1. **Salida en la etapa de dependencias**:
-    ```plaintext
-    > npm install
-    ```
-2. **Salida en la etapa de pruebas**:
-    ```plaintext
-    > npm test
-    ```
-3. **Salida en la etapa de despliegue**:
-    ```plaintext
-    > npm start&
-    ```
-4. **Health Check**:
-    ```plaintext
-    > curl http://localhost:3000
-    Bienvenido a Node.js Helloworld API!
-    ```
-
-## Notas Adicionales
-
-- Asegúrate de que el puerto 3000 no esté siendo utilizado por otra aplicación antes de iniciar la API.
-- Si quieres personalizar alguno de los pasos del pipeline, modifica el Jenkinsfile según tus necesidades.
-- La aplicación está diseñada para funcionamiento simple; para entornos productivos, considera agregar manejo de errores, logging y procesos de gestión de aplicaciones.
-
-¡Disfruta experimentando y mejorando esta API!
+Nota: Cada vez que se inicie Ngrok, la URL pública cambiará, por lo que deberá actualizar el webhook en GitHub con la nueva URL.
