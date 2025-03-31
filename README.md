@@ -58,9 +58,22 @@ Automatizar el proceso de CI/CD, que incluye la instalación de dependencias, ej
 4. Seleccione **Content type: application/json**.
 5. Marque los siguientes eventos:
    - Push
-   - Pull requests PR
 
 ---
+
+## Actualización a Pipeline Multibranch
+
+Se actualizó el pipeline clásico a un **Pipeline Multibranch** para detectar automáticamente los cambios en todas las ramas y ejecutar el pipeline en cada **pull request**.
+
+### Configuración
+
+1. Se creó un **Pipeline Multibranch** en Jenkins y se configuró con el repositorio forkeado de GitHub.
+2. En el webhook de GitHub, se habilitó la opción para que el trigger notifique a Jenkins cada vez que se cree un nuevo **pull request** en el repositorio.
+3. Jenkins ahora detecta automáticamente los cambios en cada rama y ejecuta el pipeline simulando el proceso como si los cambios ya hubieran sido integrados (mergeados).
+
+---
+
+Con esta configuración, se asegura que cada cambio en las ramas o **pull requests** sea probado automáticamente.
 
 ## Cómo Probar el Proceso
 
@@ -72,7 +85,7 @@ Automatizar el proceso de CI/CD, que incluye la instalación de dependencias, ej
 
 ## Evidencia
 
-Incluya capturas de pantalla o registros que demuestren la ejecución exitosa del proceso de CI/CD.
+
 
 ---
 
