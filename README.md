@@ -84,9 +84,21 @@ Con esta configuración, se asegura que cada cambio en las ramas o **pull reques
 ---
 
 ## Evidencia
-
-
+- Ngrok funcional
+![Nrgrok](media/ngrok.png)
+- Delivery history del webhook
+![Delivery](/media/delivery.png)
+- Pull request detectada y probada
+![PR](/media/PR.png)
+- Build del pipeline
+![build](/media/build.png)
+- Test del pipeline
+![test](/media/test.png)
+- Health check del pipeline
+![HC](/media/HC.png)
 
 ---
+## Notas
 
-Nota: Cada vez que se inicie Ngrok, la URL pública cambiará, por lo que deberá actualizar el webhook en GitHub con la nueva URL.
+- Cada vez que se inicie Ngrok, la URL pública cambiará. Por lo tanto, será necesario actualizar el webhook en GitHub con la nueva URL generada.
+- Es importante agregar credenciales al pipeline multibranch, incluso si el repositorio es público, ya que esto aumenta el límite de uso por hora y evita posibles restricciones.
