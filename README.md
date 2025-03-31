@@ -1,14 +1,19 @@
-# Node.js Helloworld API - Ejercicio de Integración y Despliegue
+# Node.js Helloworld API - Pipeline de Integración y Despliegue
 
-Esta aplicación es una API sencilla que retorna un mensaje de bienvenida. Además de su funcionalidad básica, se ha configurado un pipeline en Jenkins para integrar la instalación de dependencias, la ejecución de pruebas y el despliegue de la aplicación, incluyendo un health check.
+Este proyecto es una API sencilla en Node.js que devuelve un mensaje de bienvenida. Además, incluye un pipeline en Jenkins que automatiza la instalación de dependencias, la ejecución de pruebas y el despliegue de la aplicación, culminando con un health check.
 
-## Requisitos Previos
+## Requerimientos
 
-- [Node.js](https://nodejs.org/) instalado (se utiliza el toolchain configurado en el pipeline)
-- [npm](https://www.npmjs.com/) instalado
-- [Jenkins](https://www.jenkins.io/) para la ejecución del pipeline
+Antes de ejecutar este pipeline, asegúrate de cumplir con lo siguiente:
+
+1. **Node.js y npm**: Instala Node.js (incluye npm) desde [nodejs.org](https://nodejs.org/).
+2. **Jenkins**: Debes tener Jenkins instalado y configurado para trabajar con pipelines.
+3. **Plugin de NodeJS para Jenkins**: Configura el toolchain de Node.js en Jenkins para usar el identificador `nodejs`.
+4. **Git**: Para clonar el repositorio, asegúrate de tener Git instalado.
 
 ## Clonar el Repositorio
+
+Ejecuta el siguiente comando en tu terminal para clonar el repositorio:
 
 ```bash
 git clone https://github.com/yosoyfunes/nodejs-helloworld-api.git
@@ -16,29 +21,27 @@ git clone https://github.com/yosoyfunes/nodejs-helloworld-api.git
 
 ## Instalación de Dependencias
 
-Instala las dependencias necesarias:
+Desde la raíz del proyecto, instala las dependencias necesarias:
 
 ```bash
 npm install
 ```
 
-## Ejecución de Pruebas
+## Ejecución de Pruebas y de la Aplicación
 
-Se puede verificar el correcto funcionamiento de la aplicación mediante la ejecución de las pruebas:
+Para asegurar el correcto funcionamiento de la aplicación, ejecuta las pruebas unitarias:
 
 ```bash
 npm test
 ```
 
-## Ejecución de la Aplicación
-
-Para poner en funcionamiento el servidor localmente:
+Luego, inicia la aplicación:
 
 ```bash
 npm start
 ```
 
-Una vez que la aplicación esté corriendo, puedes hacer un request de prueba:
+Realiza una verificación rápida:
 
 ```bash
 curl http://localhost:3000
@@ -46,18 +49,52 @@ curl http://localhost:3000
 
 ## Pipeline de Integración Continua (Jenkins)
 
-El proyecto incluye un archivo [Jenkinsfile](/Users/lucasmleone/Documents/DevOps/nodejs-helloworld-api/Jenkinsfile) que define el siguiente flujo:
-  
-- **Dependencias:** Instala las dependencias usando `npm install`.
-- **Pruebas:** Ejecuta tests unitarios con `npm test`.
-- **Despliegue de la Aplicación:** Arranca la aplicación en segundo plano.
-- **Health Check:** Verifica que la aplicación responda correctamente mediante un `curl`.
+El proyecto incluye un Jenkinsfile que define el siguiente flujo:
 
-Para ejecutar el pipeline, configura un job en Jenkins que utilice el archivo mencionado y asegúrate de tener el ambiente de Node.js configurado.
+- **Instalación de Dependencias**: Ejecuta `npm install`.
+- **Ejecución de Pruebas**: Utiliza `npm test` para correr las pruebas unitarias.
+- **Inicio de la Aplicación**: Arranca la API en segundo plano usando `npm start&`.
+- **Health Check**: Verifica que la aplicación responda correctamente mediante un `curl` al puerto 3000.
+
+### Configuración del Pipeline
+
+1. **Crear un Job en Jenkins**:
+   - Crea un nuevo pipeline en Jenkins.
+   - Configura el Pipeline para que apunte al repositorio:  
+     `https://github.com/yosoyfunes/nodejs-helloworld-api.git`
+   - Selecciona la rama `main` o la que prefieras.
+   - Asegúrate de que el entorno tenga configurado el toolchain de Node.js correspondiente al label `nodejs`.
+
+2. **Ejecutar el Pipeline**:
+   - Inicia una nueva ejecución para verificar que cada etapa se ejecute correctamente.
+   - Revisa la salida en cada etapa para confirmar que la API se instala, prueba, inicia y responde adecuadamente.
+
+## Ejemplos de Ejecución en el Pipeline
+
+### Ejecución Exitosa
+
+1. **Salida en la etapa de dependencias**:
+    ```plaintext
+    > npm install
+    ```
+2. **Salida en la etapa de pruebas**:
+    ```plaintext
+    > npm test
+    ```
+3. **Salida en la etapa de despliegue**:
+    ```plaintext
+    > npm start&
+    ```
+4. **Health Check**:
+    ```plaintext
+    > curl http://localhost:3000
+    Bienvenido a Node.js Helloworld API!
+    ```
 
 ## Notas Adicionales
 
-- Asegúrate de que el puerto 3000 no esté en uso antes de iniciar la aplicación.
-- Puedes ajustar el pipeline o los scripts según tus necesidades y entorno de despliegue.
+- Asegúrate de que el puerto 3000 no esté siendo utilizado por otra aplicación antes de iniciar la API.
+- Si quieres personalizar alguno de los pasos del pipeline, modifica el Jenkinsfile según tus necesidades.
+- La aplicación está diseñada para funcionamiento simple; para entornos productivos, considera agregar manejo de errores, logging y procesos de gestión de aplicaciones.
 
-¡Disfruta probando y modificando la aplicación!
+¡Disfruta experimentando y mejorando esta API!
