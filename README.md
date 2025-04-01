@@ -63,17 +63,18 @@ Automatizar el proceso de CI/CD, que incluye la instalación de dependencias, ej
 
 ## Actualización a Pipeline Multibranch
 
-Inicialmente se usó un pipeline clásico, pero se actualizó a un **Pipeline Multibranch** para detectar automáticamente los cambios en todas las ramas y ejecutar el pipeline en cada **pull request**.
+Inicialmente, se utilizó un pipeline clásico, pero se decidió actualizar a un **Pipeline Multibranch** para mejorar la automatización. Este cambio permite detectar automáticamente los cambios en todas las ramas y ejecutar el pipeline en cada **pull request**, probando los cambios antes de que sean aceptados o integrados.
 
 ### Configuración
 
 1. Se creó un **Pipeline Multibranch** en Jenkins y se configuró con el repositorio forkeado de GitHub.
+   - **Nota:** Es importante agregar credenciales al pipeline multibranch, incluso si el repositorio es público. Esto ayuda a aumentar el límite de uso por hora de la API de GitHub y evita posibles restricciones.
 2. En el webhook de GitHub, se habilitó la opción para que el trigger notifique a Jenkins cada vez que se cree un nuevo **pull request** en el repositorio.
 3. Jenkins ahora detecta automáticamente los cambios en cada rama y ejecuta el pipeline simulando el proceso como si los cambios ya hubieran sido integrados (mergeados).
 
 ---
 
-Con esta configuración, se asegura que cada cambio en las ramas o **pull requests** sea probado automáticamente.
+Con esta configuración, se garantiza que cada cambio en las ramas o **pull requests** sea probado automáticamente antes de ser aceptado o integrado.
 
 ## Cómo Probar el Proceso
 
@@ -103,6 +104,3 @@ Con esta configuración, se asegura que cada cambio en las ramas o **pull reques
 ## Notas
 
 - Cada vez que se inicie Ngrok, la URL pública cambiará. Por lo tanto, será necesario actualizar el webhook en GitHub con la nueva URL generada.
-- Es importante agregar credenciales al pipeline multibranch, incluso si el repositorio es público, ya que esto aumenta el límite de uso por hora y evita posibles restricciones.
-
-prueba
